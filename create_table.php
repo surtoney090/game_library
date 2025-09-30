@@ -29,7 +29,7 @@ $sql = "CREATE TABLE games (
 #if ($conn->query($sql) === TRUE) {
 #echo "Table 'games' created successfully";
 #} else {
-echo "Error creating table: " . $conn->error;
+#echo "Error creating table: " . $conn->error;
 #}
 
 $conn->close();
