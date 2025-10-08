@@ -11,6 +11,8 @@ class Game
     private $rating;
 
     # Constructor: volgorde moet overeenkomen met je GameManager
+    //construct wordt direct uitgevoerd als het object wordt aangemaakt
+    // $game = new Game();
     public function __construct(
         $title,
         $developer,

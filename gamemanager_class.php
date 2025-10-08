@@ -12,10 +12,14 @@ class GameManager
     public function getAllGames()
     {
         try {
+            //msql statement voor ophalen van games
             $sql = "SELECT * FROM games";
+            //stuur de quer naar db
             $stmt = $this->db->query($sql);
+            //games is een nieuwe lege arra
             $games = [];
 
+            //looped net zo lang, als hoeveel games er zijn in db
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $games[] = new Game(
                     $row['title'],
@@ -28,7 +32,7 @@ class GameManager
                     (int)$row['id']
                 );
             }
-
+            //return de gevulde arra
             return $games;
         } catch (PDOException $e) {
             echo "<p style='color:red;'>Error in getAllGames: " . $e->getMessage() . "</p>";
@@ -72,6 +76,7 @@ class GameManager
                 INSERT INTO games (title, developer, description, genre, platform, release_year, rating) 
                 VALUES (:title, :developer, :description, :genre, :platform, :release_year, :rating)
             ");
+            //bindvalue of binparam, tegen sqlinjection
             $stmt->bindValue(':title', $game->getTitle());
             $stmt->bindValue(':developer', $game->getDeveloper());
             $stmt->bindValue(':description', $game->getDescription());

@@ -39,17 +39,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Nieuwe Game Toevoegen</title>
+    <title>Add New Game</title>
 </head>
 
 <body>
-    <h1>Nieuwe Game Toevoegen</h1>
+    <h1>Add New Game</h1>
 
     <?php if (!empty($success)): ?>
         <p style="color:green;"><?= htmlspecialchars($success) ?></p>
@@ -64,16 +63,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?php endif; ?>
 
     <form method="post" action="add_game.php">
-        <label for="title">Titel:</label><br>
+        <label for="title">Title:</label><br>
         <input type="text" name="title" id="title" required><br><br>
 
         <label for="genre">Genre:</label><br>
         <input type="text" name="genre" id="genre" required><br><br>
 
-        <label for="release_year">Releasejaar:</label><br>
+        <label for="release_year">ReleaseYear:</label><br>
         <input type="number" name="release_year" id="release_year" required><br><br>
 
-        <button type="submit">Toevoegen</button>
+        <button type="submit">Add</button>
     </form>
 </body>
 

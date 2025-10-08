@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-# Als er een edit-request komt → game ophalen
+# Als er een edit-request komt game ophalen
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
     $editGame = $manager->getGameById($_GET['edit']);
 }
@@ -233,19 +233,19 @@ $games = $manager->getAllGames();
             <button type="submit"><?= $editGame ? "Opslaan" : "Toevoegen" ?></button>
         </form>
 
-        <h2>Alle games</h2>
+        <h2>All Games</h2>
         <?php if (count($games) > 0): ?>
             <table>
                 <tr>
                     <th>ID</th>
-                    <th>Titel</th>
+                    <th>Title</th>
                     <th>Developer</th>
-                    <th>Beschrijving</th>
+                    <th>Description</th>
                     <th>Genre</th>
                     <th>Platform</th>
-                    <th>Release jaar</th>
+                    <th>Release Year</th>
                     <th>Rating</th>
-                    <th>Acties</th>
+                    <th>Actions</th>
                 </tr>
                 <?php foreach ($games as $game): ?>
                     <tr>
@@ -259,19 +259,19 @@ $games = $manager->getAllGames();
                         <td><?= htmlspecialchars($game->getRating()); ?></td>
                         <td>
 
-                            <a href="?edit=<?= $game->getId(); ?>" class="edit-btn">Bewerken</a>
+                            <a href="?edit=<?= $game->getId(); ?>" class="edit-btn">Edit</a>
 
                             <form method="POST" style="display:inline;">
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="id" value="<?= $game->getId(); ?>">
-                                <button type="submit" class="delete-btn">Verwijderen</button>
+                                <button type="submit" class="delete-btn">Remove</button>
                             </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </table>
         <?php else: ?>
-            <p>Nog geen games toegevoegd!</p>
+            <p>Games Yet To Be Added!</p>
         <?php endif; ?>
     </main>
 </body>
