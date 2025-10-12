@@ -25,6 +25,20 @@ $editGame = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
+    $imagePath = null;
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = 'uploads/';
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+
+        $fileName = time() . '_' . basename($_FILES['image']['name']);
+        $targetPath = $uploadDir . $fileName;
+
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+            $imagePath = $targetPath;
+        }
+    }
+
     if ($action === 'add') {
         $newGame = new Game(
             $_POST['title'],
@@ -33,7 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['genre'],
             $_POST['platform'],
             $_POST['release_year'],
-            $_POST['rating']
+            $_POST['rating'],
+            null,
+            $imagePath
         );
 
         if ($manager->addGame($newGame)) {
@@ -52,6 +68,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($action === 'update') {
+        $currentGame = $manager->getGameById($_POST['id']);
+        $imagePath = $currentGame->getImagePath();
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = 'uploads/';
+            if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
+            $fileName = time() . '_' . basename($_FILES['image']['name']);
+            $targetPath = $uploadDir . $fileName;
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+                $imagePath = $targetPath;
+            }
+        }
+
         $gameToUpdate = new Game(
             $_POST['title'],
             $_POST['developer'],
@@ -60,7 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_POST['platform'],
             $_POST['release_year'],
             $_POST['rating'],
-            $_POST['id']
+            $_POST['id'],
+            $imagePath
         );
 
         if ($manager->updateGame($gameToUpdate)) {
@@ -82,7 +112,7 @@ $games = $manager->getAllGames();
 <html lang="nl">
 
 <head>
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
     <title>Game Library</title>
     <style>
         body {
@@ -217,7 +247,7 @@ $games = $manager->getAllGames();
     <main>
 
         <h2><?= $editGame ? "Game bewerken" : "Nieuwe game toevoegen" ?></h2>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <input type="hidden" name="action" value="<?= $editGame ? "update" : "add" ?>">
             <?php if ($editGame): ?>
                 <input type="hidden" name="id" value="<?= $editGame->getId(); ?>">
@@ -230,7 +260,8 @@ $games = $manager->getAllGames();
             <input type="text" name="platform" placeholder="Platform" value="<?= $editGame ? htmlspecialchars($editGame->getPlatform()) : "" ?>">
             <input type="number" name="release_year" placeholder="Release jaar" value="<?= $editGame ? htmlspecialchars($editGame->getReleaseYear()) : "" ?>">
             <input type="number" name="rating" min="1" max="10" placeholder="Rating (1-10)" value="<?= $editGame ? htmlspecialchars($editGame->getRating()) : "" ?>">
-            <button type="submit"><?= $editGame ? "Opslaan" : "Toevoegen" ?></button>
+            <input type="file" name="image" accept="image/*">
+            <button type="submit"><?= $editGame ? "Save" : "Add" ?></button>
         </form>
 
         <h2>All Games</h2>
@@ -246,6 +277,7 @@ $games = $manager->getAllGames();
                     <th>Release Year</th>
                     <th>Rating</th>
                     <th>Actions</th>
+                    <td><a href="game_details.php?id=<?= $game->getId(); ?>" style="color:#2a5298;">View</a></td>
                 </tr>
                 <?php foreach ($games as $game): ?>
                     <tr>

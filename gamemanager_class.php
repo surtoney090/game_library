@@ -29,7 +29,8 @@ class GameManager
                     $row['platform'],
                     (int)$row['release_year'],
                     (int)$row['rating'],
-                    (int)$row['id']
+                    (int)$row['id'],
+                    $row['image_path'] ?? null
                 );
             }
             //return de gevulde arra
@@ -58,7 +59,8 @@ class GameManager
                     $row['platform'],
                     (int)$row['release_year'],
                     (int)$row['rating'],
-                    (int)$row['id']
+                    (int)$row['id'],
+                    $row['image_path'] ?? null
                 );
             }
             return null;
@@ -73,8 +75,8 @@ class GameManager
     {
         try {
             $stmt = $this->db->prepare("
-                INSERT INTO games (title, developer, description, genre, platform, release_year, rating) 
-                VALUES (:title, :developer, :description, :genre, :platform, :release_year, :rating)
+                INSERT INTO games (title, developer, description, genre, platform, release_year, rating, image_path) 
+                VALUES (:title, :developer, :description, :genre, :platform, :release_year, :rating, :image_path)
             ");
             //bindvalue of binparam, tegen sqlinjection
             $stmt->bindValue(':title', $game->getTitle());
@@ -84,6 +86,7 @@ class GameManager
             $stmt->bindValue(':platform', $game->getPlatform());
             $stmt->bindValue(':release_year', (int)$game->getReleaseYear(), PDO::PARAM_INT);
             $stmt->bindValue(':rating', (int)$game->getRating(), PDO::PARAM_INT);
+            $stmt->bindValue(':image_path', $game->getImagePath());
 
             $success = $stmt->execute();
 
@@ -105,7 +108,7 @@ class GameManager
         try {
             $stmt = $this->db->prepare("
                 UPDATE games 
-                SET title=:title, developer=:developer, description=:description, genre=:genre, platform=:platform, release_year=:release_year, rating=:rating 
+                SET title=:title, developer=:developer, description=:description, genre=:genre, platform=:platform, release_year=:release_year, rating=:rating, image_path=:image_path 
                 WHERE id=:id
             ");
             $stmt->bindValue(':title', $game->getTitle());
@@ -116,6 +119,8 @@ class GameManager
             $stmt->bindValue(':release_year', (int)$game->getReleaseYear(), PDO::PARAM_INT);
             $stmt->bindValue(':rating', (int)$game->getRating(), PDO::PARAM_INT);
             $stmt->bindValue(':id', (int)$game->getId(), PDO::PARAM_INT);
+            $stmt->bindValue(':image_path', $game->getImagePath());
+
 
             return $stmt->execute();
         } catch (PDOException $e) {

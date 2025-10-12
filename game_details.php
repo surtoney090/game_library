@@ -1,4 +1,5 @@
 <?php
+require_once 'create_db.php';
 require_once 'Game_class.php';
 require_once 'GameManager_class.php';
 
@@ -10,6 +11,74 @@ $errors = [];
 $success = "";
 $game = null;
 
+if (isset($_GET['id'])) {
+    $game = $manager->getGameById($_GET['id']);
+}
+?>
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+    <title><?= htmlspecialchars($game ? $game->getTitle() : 'Game Details') ?></title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(120deg, #1e3c72, #2a5298);
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+
+        img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <?php if ($game): ?>
+            <h1><?= htmlspecialchars($game->getTitle()) ?></h1>
+            <?php if ($game->getImagePath()): ?>
+                <img src="<?= htmlspecialchars($game->getImagePath()) ?>" alt="Game image">
+            <?php endif; ?>
+            <p><strong>Developer:</strong> <?= htmlspecialchars($game->getDeveloper()) ?></p>
+            <p><strong>Description:</strong> <?= htmlspecialchars($game->getDescription()) ?></p>
+            <p><strong>Genre:</strong> <?= htmlspecialchars($game->getGenre()) ?></p>
+            <p><strong>Platform:</strong> <?= htmlspecialchars($game->getPlatform()) ?></p>
+            <p><strong>Release Year:</strong> <?= htmlspecialchars($game->getReleaseYear()) ?></p>
+            <p><strong>Rating:</strong> <?= htmlspecialchars($game->getRating()) ?>/10</p>
+            <a href="index.php" style="color:#ff9800;">← Back to Library</a>
+        <?php else: ?>
+            <p>Game not found.</p>
+        <?php endif; ?>
+    </main>
+</body>
+
+</html>
+<?php
 # get game ID from url
 $id = $_GET['id'] ?? null;
 if (!$id || !ctype_digit($id)) {
@@ -26,8 +95,8 @@ if (!$game) {
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (isset($_POST['update'])) {
         # update
-        $title       = trim($_POST['title'] ?? '');
-        $developer   = trim($_POST['developer'] ?? '');
+        $title = trim($_POST['title'] ?? '');
+        $developer = trim($_POST['developer'] ?? '');
         $releaseDate = trim($_POST['release_date'] ?? '');
         $description = trim($_POST['description'] ?? '');
 
@@ -50,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         } else {
             // If no image is uploaded, set imagePath to null or empty string
-            $imagePath = null;  // Or '' if you prefer an empty string
+            $imagePath = null; // Or '' if you prefer an empty string
         }
 
         if (empty($errors)) {
@@ -79,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="nl">
 
 <head>
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
     <title><?= htmlspecialchars($game->getTitle()) ?> - Details</title>
 </head>
 
@@ -124,7 +193,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <label for="description">Description:</label><br>
         <textarea name="description" required><?= htmlspecialchars($game->getDescription()) ?></textarea><br><br>
 
-        <label for="image">Image (optional):</label><br>
+        <label for="image">Image:</label><br>
         <input type="file" name="image" accept="image/*"><br><br>
 
         <button type="submit" name="update">Update</button>

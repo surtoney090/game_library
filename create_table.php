@@ -23,6 +23,7 @@ $sql = "CREATE TABLE games (
     platform VARCHAR(50),
     release_year YEAR
     rating DECIMAL(3,1) 
+    image_path VARCHAR (255)
 )";
 
 # Sends "make table" instruction to MySQL.

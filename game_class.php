@@ -9,10 +9,9 @@ class Game
     private $platform;
     private $releaseYear;
     private $rating;
+    private $imagePath;
 
-    # Constructor: volgorde moet overeenkomen met je GameManager
-    //construct wordt direct uitgevoerd als het object wordt aangemaakt
-    // $game = new Game();
+    # construct voerd automatisch uit zodra de file wordt gerunt.
     public function __construct(
         $title,
         $developer,
@@ -21,7 +20,8 @@ class Game
         $platform,
         $releaseYear,
         $rating,
-        $id = null
+        $id = null,
+        $imagePath = null
     ) {
         $this->title       = $title;
         $this->developer   = $developer;
@@ -31,6 +31,7 @@ class Game
         $this->releaseYear = $releaseYear;
         $this->rating      = $rating;
         $this->id          = $id;
+        $this->imagePath   = $imagePath;
     }
 
     # Getters
@@ -66,6 +67,10 @@ class Game
     {
         return $this->rating;
     }
+    public function getImagePath()
+    {
+        return $this->imagePath;
+    }
 
     # Setters (optioneel, handig bij update)
     public function setTitle($title)
@@ -95,5 +100,9 @@ class Game
     public function setRating($rating)
     {
         $this->rating = $rating;
+    }
+    public function setImagePath($imagePath)
+    {
+        $this->imagePath = $imagePath;
     }
 }
