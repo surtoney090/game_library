@@ -23,7 +23,7 @@ if ($conn->connect_error) {
     die("Connection to game_library failed: " . $conn->connect_error);
 }
 
-# Correcte SQL met komma's
+# sql create table if it doesn't exist already
 $sql = "CREATE TABLE IF NOT EXISTS games (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,

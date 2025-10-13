@@ -33,7 +33,7 @@ class GameManager
                     $row['image_path'] ?? null
                 );
             }
-            //return de gevulde arra
+            //return de gevulde array
             return $games;
         } catch (PDOException $e) {
             echo "<p style='color:red;'>Error in getAllGames: " . $e->getMessage() . "</p>";

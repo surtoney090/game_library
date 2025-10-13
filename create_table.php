@@ -21,8 +21,8 @@ $sql = "CREATE TABLE games (
     title VARCHAR(100) NOT NULL,
     genre VARCHAR(50) NOT NULL,
     platform VARCHAR(50),
-    release_year YEAR
-    rating DECIMAL(3,1) 
+    release_year YEAR,
+    rating DECIMAL(3,1),
     image_path VARCHAR (255)
 )";
 

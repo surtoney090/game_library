@@ -119,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         } else {
             // If no image is uploaded, set imagePath to null or empty string
-            $imagePath = null; // Or '' if you prefer an empty string
+            $imagePath = null; // Or ''
         }
 
         if (empty($errors)) {

@@ -1,7 +1,7 @@
 <?php
-require 'create_db.php'; # data, lil B!
-require 'game_class.php'; # Slow smh
-require 'gamemanager_class.php'; # rich manager del, add, change
+require 'create_db.php'; // Verantwoordelijk voor het aanmaken van de databaseverbinding of -structuur
+require 'game_class.php'; // Bevat de Game-klasse die individuele gameobjecten beschrijft
+require 'gamemanager_class.php'; // Bevat de GameManager-klasse voor CRUD-operaties
 
 # connect to db with tha PDO
 $servername = "localhost";

@@ -54,3 +54,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 }
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+    <title>Add New Game</title>
+</head>
+
+<body>
+    <h1>Add New Game</h1>
+
+    <?php if (!empty($success)): ?>
+        <p style="color:green;"><?= htmlspecialchars($success) ?></p>
+    <?php endif; ?>
+
+    <?php if (!empty($errors)): ?>
+        <ul style="color:red;">
+            <?php foreach ($errors as $error): ?>
+                <li><?= htmlspecialchars($error) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+
+    <form method="post" action="add_game.php">
+        <label for="title">Title:</label><br>
+        <input type="text" name="title" id="title" required><br><br>
+
+        <label for="genre">Genre:</label><br>
+        <input type="text" name="genre" id="genre" required><br><br>
+
+        <label for="release_year">ReleaseYear:</label><br>
+        <input type="number" name="release_year" id="release_year" required><br><br>
+
+        <button type="submit">Add</button>
+    </form>
+</body>
+
+</html>
