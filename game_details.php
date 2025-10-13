@@ -4,8 +4,8 @@ require_once 'Game_class.php';
 require_once 'GameManager_class.php';
 
 # connecting to database
-$pdo = new PDO('mysql:host=localhost;dbname=gamestore;charset=utf8', 'root', '');
-$gameManager = new GameManager($pdo);
+$pdo = new mysqli('mysql:host=localhost;dbname=gamestore;charset=utf8', 'root', '');
+$gameManager = new GameManager($mysqli);
 
 $errors = [];
 $success = "";

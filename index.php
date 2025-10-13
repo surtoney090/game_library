@@ -277,7 +277,7 @@ $games = $manager->getAllGames();
                     <th>Release Year</th>
                     <th>Rating</th>
                     <th>Actions</th>
-                    <td><a href="game_details.php?id=<?= $game->getId(); ?>" style="color:#2a5298;">View</a></td>
+                    <th>Remove/Edit</th>
                 </tr>
                 <?php foreach ($games as $game): ?>
                     <tr>
@@ -289,6 +289,7 @@ $games = $manager->getAllGames();
                         <td><?= htmlspecialchars($game->getPlatform()); ?></td>
                         <td><?= htmlspecialchars($game->getReleaseYear()); ?></td>
                         <td><?= htmlspecialchars($game->getRating()); ?></td>
+                        <td><a href="game_details.php?id=<?= $game->getId(); ?>" style="color:#2a5298;">View</a></td>
                         <td>
 
                             <a href="?edit=<?= $game->getId(); ?>" class="edit-btn">Edit</a>
