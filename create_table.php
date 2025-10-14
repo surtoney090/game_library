@@ -1,14 +1,17 @@
 <?php
 $servername = "localhost";
 $username = "root";
-$password = "";
+$password = "IJmuiden1611";
 $database = "game_library";
 
-$conn = new mysqli($servername, $username, $password, $database);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+try {
+    $pdo = new PDO('mysql:host=localhost;dbname=game_library;charset=utf8', 'root', '');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
 }
+
+$gameManager = new GameManager($pdo);
 
 # Creates the table
 # games is the name of our table

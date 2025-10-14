@@ -1,19 +1,23 @@
 <?php
 require_once 'create_db.php';
 require_once 'Game_class.php';
-require_once 'GameManager_class.php';
 
 # connecting to database
-$pdo = new mysqli('mysql:host=localhost;dbname=gamestore;charset=utf8', 'root', '');
-$gameManager = new GameManager($mysqli);
+try {
+    $pdo = new PDO('mysql:host=localhost;dbname=game_library;charset=utf8', 'root', 'IJmuiden1611');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
+}
+
+$gameManager = new GameManager($pdo);
+
+
 
 $errors = [];
 $success = "";
 $game = null;
 
-if (isset($_GET['id'])) {
-    $game = $manager->getGameById($_GET['id']);
-}
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -26,13 +30,13 @@ if (isset($_GET['id'])) {
             font-family: 'Segoe UI', sans-serif;
             background: linear-gradient(120deg, #1e3c72, #2a5298);
             color: #fff;
-            margin: 0;
+            margin: center;
             padding: 0;
         }
 
         main {
             max-width: 800px;
-            margin: 30px auto;
+            margin: center;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 20px;
@@ -88,7 +92,7 @@ if (!$id || !ctype_digit($id)) {
 # get game info
 $game = $gameManager->getGameById((int)$id);
 if (!$game) {
-    die("Game not found!");
+    die("");
 }
 
 # processing the form

@@ -1,9 +1,8 @@
 <?php
 require 'create_db.php'; // Verantwoordelijk voor het aanmaken van de databaseverbinding of -structuur
 require 'game_class.php'; // Bevat de Game-klasse die individuele gameobjecten beschrijft
-require 'gamemanager_class.php'; // Bevat de GameManager-klasse voor CRUD-operaties
 
-# connect to db with tha PDO
+#  Databaseverbinding via PDO
 $servername = "localhost";
 $username   = "root";
 $password   = "IJmuiden1611";
@@ -16,7 +15,7 @@ try {
 } catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }
-
+#  Initialisatie van GameManager en variabelen
 $manager = new GameManager($db);
 $message = "";
 $editGame = null;
@@ -24,9 +23,9 @@ $editGame = null;
 # Als formulier is ingediend voeg toe of update
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
-
     $imagePath = null;
-
+    #create directory (list thingy with mulitple things)
+    #  Afbeelding uploaden (indien aanwezig)
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $uploadDir = 'uploads/';
         if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
@@ -38,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $imagePath = $targetPath;
         }
     }
-
+    #  Nieuwe game toevoegen
     if ($action === 'add') {
         $newGame = new Game(
             $_POST['title'],
@@ -58,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message = "<div class='error'>Fout bij toevoegen van game.</div>";
         }
     }
-
+    #  Game verwijderen
     if ($action === 'delete') {
         if ($manager->deleteGame($_POST['id'])) {
             $message = "<div class='success'>Game succesvol verwijderd!</div>";
@@ -66,11 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $message = "<div class='error'>Fout bij verwijderen van game.</div>";
         }
     }
-
+    #  Game bijwerken
     if ($action === 'update') {
         $currentGame = $manager->getGameById($_POST['id']);
         $imagePath = $currentGame->getImagePath();
-
+        // Controleer of er een nieuwe afbeelding is geüpload
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $uploadDir = 'uploads/';
             if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
@@ -80,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $imagePath = $targetPath;
             }
         }
-
+        // Maak een Game-object met de bijgewerkte gegevens
         $gameToUpdate = new Game(
             $_POST['title'],
             $_POST['developer'],
@@ -101,11 +100,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-# Als er een edit-request komt game ophalen
+#  Ophalen van game voor bewerking (indien GET-parameter aanwezig)
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['edit'])) {
     $editGame = $manager->getGameById($_GET['edit']);
 }
-
+#  Alle games ophalen voor weergave in tabel
 $games = $manager->getAllGames();
 ?>
 <!DOCTYPE html>
